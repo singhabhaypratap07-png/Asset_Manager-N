@@ -27,7 +27,7 @@ jobs:
       run: dotnet publish -c Release -r win-x64 --self-contained true -o publish
 
     - name: Upload EXE Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: AssetManager-EXE
         path: publish
