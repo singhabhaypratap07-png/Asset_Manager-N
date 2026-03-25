@@ -1,0 +1,29 @@
+
+name: Build EXE
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+    - name: Restore packages
+      run: dotnet restore
+    - name: Build Project
+      run: dotnet build -c Release
+    - name: Publish EXE
+      run: dotnet publish -c Release -r win-x64 --self-contained true -o publish
+    - name: Upload EXE Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: AssetManager-EXE
+        path: publish
