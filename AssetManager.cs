@@ -218,27 +218,7 @@ CREATE INDEX IF NOT EXISTS IX_Audit_At ON AssetAudit(At);
 CREATE INDEX IF NOT EXISTS IX_Audit_Asset ON AssetAudit(AssetId);";
                     cmd.ExecuteNonQuery();
                 }
-public static void DataTableToCsv(DataTable dt, string path)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                sb.Append(dt.Columns[i].ColumnName + (i == dt.Columns.Count - 1 ? "" : ","));
-            }
-            sb.AppendLine();
-            foreach (DataRow row in dt.Rows)
-            {
-                for (int i = 0; i < dt.Columns.Count; i++)
-                {
-                    string val = row[i].ToString().Replace("\"", "\"\"");
-                    if (val.Contains(",") || val.Contains("\n") || val.Contains("\r"))
-                        val = "\"" + val + "\"";
-                    sb.Append(val + (i == dt.Columns.Count - 1 ? "" : ","));
-                }
-                sb.AppendLine();
-            }
-            File.WriteAllText(path, sb.ToString());
-        }
+
                 // Seed default admin (hashed "123")
                 using (var cmd = con.CreateCommand())
                 {
@@ -1689,12 +1669,7 @@ for (int i = 0; i < grid.Rows.Count; i++)
                 return s.Substring(0, Math.Max(1, maxChars - 1)) + "…";
             };
             
-            W("%PDF-1.4\n");
-            xref.Add(buf.Position); W("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
-            xref.Add(buf.Position); W("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
-            xref.Add(buf.Position); W("4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n");
-            xref.Add(buf.Position); W("5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n");
-
+            
             var pagesContent = new List<byte[]>();
             int pageNum = 0;
 
