@@ -221,7 +221,27 @@ CREATE INDEX IF NOT EXISTS IX_Audit_At ON AssetAudit(At);
 CREATE INDEX IF NOT EXISTS IX_Audit_Asset ON AssetAudit(AssetId);";
                     cmd.ExecuteNonQuery();
                 }
-
+public static void DataTableToCsv(DataTable dt, string path)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                sb.Append(dt.Columns[i].ColumnName + (i == dt.Columns.Count - 1 ? "" : ","));
+            }
+            sb.AppendLine();
+            foreach (DataRow row in dt.Rows)
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    string val = row[i].ToString().Replace("\"", "\"\"");
+                    if (val.Contains(",") || val.Contains("\n") || val.Contains("\r"))
+                        val = "\"" + val + "\"";
+                    sb.Append(val + (i == dt.Columns.Count - 1 ? "" : ","));
+                }
+                sb.AppendLine();
+            }
+            File.WriteAllText(path, sb.ToString());
+        }
                 // Seed default admin (hashed "123")
                 using (var cmd = con.CreateCommand())
                 {
