@@ -1,13 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
 
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Update="AssetManager.db"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
-    <None Update="System.Data.SQLite.dll"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
-    <None Update="SQLite.Interop.dll"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
   </ItemGroup>
+
 </Project>
