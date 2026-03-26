@@ -31,6 +31,29 @@ namespace AssetManager
 
             try { Db.Initialize(); }
             catch (Exception ex)
+
+                // Yeh method CSV export ke liye zaroori hai
+        public static void DataTableToCsv(DataTable dt, string path)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                sb.Append(dt.Columns[i].ColumnName + (i == dt.Columns.Count - 1 ? "" : ","));
+            }
+            sb.AppendLine();
+            foreach (DataRow row in dt.Rows)
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    string val = row[i].ToString().Replace("\"", "\"\"");
+                    if (val.Contains(",") || val.Contains("\n") || val.Contains("\r"))
+                        val = "\"" + val + "\"";
+                    sb.Append(val + (i == dt.Columns.Count - 1 ? "" : ","));
+                }
+                sb.AppendLine();
+            }
+            File.WriteAllText(path, sb.ToString());
+        }
             {
                 MessageBox.Show("Database init failed:\n" + ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
