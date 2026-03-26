@@ -1012,7 +1012,6 @@ WHERE Id=@id";
                     grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 grid.MultiSelect = true;          // Multi‑Row Selection enable
 grid.RowHeadersVisible = true;    // Select All corner button दिखाई देने के लिए
-``
                     grid.Dock = DockStyle.Fill;
 
                     grid.DataSource = Db.GetAssetsByUnitAndCategory(currentUnit, c);
