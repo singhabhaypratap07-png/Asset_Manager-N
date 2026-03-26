@@ -1669,12 +1669,7 @@ for (int i = 0; i < grid.Rows.Count; i++)
                 if (s.Length <= maxChars) return s;
                 return s.Substring(0, Math.Max(1, maxChars - 1)) + "…";
             };
-
-            var xref = new List<long>();
-            var buf = new MemoryStream();
-            var sw = new StreamWriter(buf, new ASCIIEncoding()) { NewLine = "\n" };
-            Action<string> W = (s) => sw.Write(s);
-
+            
             W("%PDF-1.4\n");
             xref.Add(buf.Position); W("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
             xref.Add(buf.Position); W("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
