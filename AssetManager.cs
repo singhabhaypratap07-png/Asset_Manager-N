@@ -292,11 +292,11 @@ CREATE INDEX IF NOT EXISTS IX_Audit_Asset ON AssetAudit(AssetId);";
         public static void CreatePasswordHash(string password, out string saltB64, out string hashB64, out int iter)
         {
             iter = 10000;
-            using (var rng = new RNGCryptoServiceProvider())
+            byte[] salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
             {
-                byte[] salt = new byte[16];
                 rng.GetBytes(salt);
-                var pbkdf2 = new Rfc2898DeriveBytes(password ?? "", salt, iter);
+                var pbkdf2 = new Rfc2898DeriveBytes(password ?? "", salt, iter, HashAlgorithmName.SHA256);
                 var hash = pbkdf2.GetBytes(32);
                 saltB64 = Convert.ToBase64String(salt);
                 hashB64 = Convert.ToBase64String(hash);
@@ -307,7 +307,7 @@ CREATE INDEX IF NOT EXISTS IX_Audit_Asset ON AssetAudit(AssetId);";
         {
             if (string.IsNullOrEmpty(saltB64) || string.IsNullOrEmpty(hashB64)) return false;
             byte[] salt = Convert.FromBase64String(saltB64);
-            var pbkdf2 = new Rfc2898DeriveBytes(password ?? "", salt, iter > 0 ? iter : 10000);
+            var pbkdf2 = new Rfc2898DeriveBytes(password ?? "", salt, iter > 0 ? iter : 10000, HashAlgorithmName.SHA256);
             var hash = pbkdf2.GetBytes(32);
             var given = Convert.ToBase64String(hash);
             return string.Equals(given, hashB64, StringComparison.Ordinal);
